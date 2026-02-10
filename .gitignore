@@ -1,0 +1,27 @@
+# Sovereign Life OS — .gitignore
+# Keep secrets and runtime data out of version control
+
+# Environment files with actual secrets
+.env
+!.env.example
+
+# Runtime data directories (back these up separately)
+*/*/data/**
+!*/*/data/.gitkeep
+
+# Docker volumes
+docker-volumes/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Backup archives
+*.tar.gz
+*.zip

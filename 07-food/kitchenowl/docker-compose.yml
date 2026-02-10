@@ -1,0 +1,22 @@
+services:
+  kitchenowl:
+    image: tombursch/kitchenowl:latest
+    container_name: kitchenowl
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - JWT_SECRET_KEY=${JWT_SECRET:-changeme}
+    restart: unless-stopped
+
+  kitchenowl-web:
+    image: tombursch/kitchenowl-web:latest
+    container_name: kitchenowl-web
+    ports:
+      - "${WEB_PORT:-8090}:80"
+    environment:
+      - BACK_URL=http://kitchenowl:8080
+    depends_on:
+      - kitchenowl
+    restart: unless-stopped

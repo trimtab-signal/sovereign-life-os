@@ -1,0 +1,12 @@
+services:
+  endurain:
+    image: ghcr.io/joaovitoriasilva/endurain:latest
+    container_name: endurain
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-changeme_random_string}
+      - DB_URL=sqlite:///data/endurain.db
+    restart: unless-stopped

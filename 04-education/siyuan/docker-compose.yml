@@ -1,0 +1,13 @@
+services:
+  siyuan:
+    image: b3log/siyuan:latest
+    container_name: siyuan
+    ports:
+      - "${PORT:-6806}:6806"
+    volumes:
+      - ./data/workspace:/siyuan/workspace
+    environment:
+      - PUID=1000
+      - PGID=1000
+    restart: unless-stopped
+    command: ["--workspace", "/siyuan/workspace"]

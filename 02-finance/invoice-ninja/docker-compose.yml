@@ -1,0 +1,15 @@
+services:
+  invoice-ninja:
+    image: invoiceninja/invoiceninja:5
+    container_name: invoice-ninja
+    ports:
+      - "${PORT:-8080}:80"
+    volumes:
+      - ./data/public:/var/www/app/public
+      - ./data/storage:/var/www/app/storage
+    environment:
+      - APP_URL=http://localhost:${PORT:-8080}
+      - APP_KEY=${APP_KEY:-base64:changeme}
+      - DB_TYPE=sqlite
+      - DB_DATABASE=/var/www/app/storage/database.sqlite
+    restart: unless-stopped

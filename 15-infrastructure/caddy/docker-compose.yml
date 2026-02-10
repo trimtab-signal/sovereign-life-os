@@ -1,0 +1,12 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/caddy_data:/data
+      - ./data/caddy_config:/config
+    restart: unless-stopped

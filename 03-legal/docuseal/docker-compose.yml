@@ -1,0 +1,9 @@
+services:
+  docuseal:
+    image: docuseal/docuseal:latest
+    container_name: docuseal
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped

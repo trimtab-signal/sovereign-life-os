@@ -1,0 +1,14 @@
+services:
+  wger:
+    image: wger/server:latest
+    container_name: wger
+    ports:
+      - "${PORT:-8000}:80"
+    volumes:
+      - ./data/media:/home/wger/media
+      - ./data/static:/home/wger/static
+    environment:
+      - DJANGO_DB_ENGINE=django.db.backends.sqlite3
+      - DJANGO_DB_DATABASE=/home/wger/db/db.sqlite3
+      - SITE_URL=http://localhost:${PORT:-8000}
+    restart: unless-stopped

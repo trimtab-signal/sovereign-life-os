@@ -1,0 +1,24 @@
+services:
+  synapse:
+    image: matrixdotorg/synapse:latest
+    container_name: matrix-synapse
+    ports:
+      - "8008:8008"
+    volumes:
+      - ./data/synapse:/data
+    environment:
+      - SYNAPSE_SERVER_NAME=${DOMAIN:-localhost}
+      - SYNAPSE_REPORT_STATS=no
+      - SYNAPSE_CONFIG_DIR=/data
+    restart: unless-stopped
+
+  element:
+    image: vectorim/element-web:latest
+    container_name: element-web
+    ports:
+      - "${PORT:-8088}:80"
+    volumes:
+      - ./config/element-config.json:/app/config.json:ro
+    depends_on:
+      - synapse
+    restart: unless-stopped

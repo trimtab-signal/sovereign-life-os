@@ -1,0 +1,13 @@
+services:
+  openproject:
+    image: openproject/openproject:14
+    container_name: openproject
+    ports:
+      - "${PORT:-8080}:80"
+    volumes:
+      - ./data/pgdata:/var/openproject/pgdata
+      - ./data/assets:/var/openproject/assets
+    environment:
+      - OPENPROJECT_SECRET_KEY_BASE=${SECRET_KEY:-changeme_long}
+      - OPENPROJECT_HOST__NAME=localhost:${PORT:-8080}
+    restart: unless-stopped

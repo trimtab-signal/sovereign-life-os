@@ -1,0 +1,24 @@
+services:
+  owntracks-recorder:
+    image: owntracks/recorder:latest
+    container_name: owntracks-recorder
+    ports:
+      - "${PORT:-8083}:8083"
+    volumes:
+      - ./data/store:/store
+    environment:
+      - OTR_HOST=0.0.0.0
+      - OTR_PORT=8083
+    restart: unless-stopped
+
+  owntracks-frontend:
+    image: owntracks/frontend:latest
+    container_name: owntracks-frontend
+    ports:
+      - "${FRONTEND_PORT:-8084}:80"
+    environment:
+      - SERVER_HOST=owntracks-recorder
+      - SERVER_PORT=8083
+    depends_on:
+      - owntracks-recorder
+    restart: unless-stopped

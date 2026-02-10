@@ -1,0 +1,202 @@
+# ═══════════════════════════════════════════════════════════════
+# Sovereign Life OS — Caddy Reverse Proxy Configuration
+# ═══════════════════════════════════════════════════════════════
+#
+# Replace {$DOMAIN} with your actual domain (e.g., family.example.com)
+# Caddy automatically obtains and renews Let's Encrypt HTTPS certificates.
+#
+# Usage:
+#   1. Copy this to 14-infrastructure/caddy/Caddyfile
+#   2. Replace all instances of "family.tld" with your domain
+#   3. Adjust ports to match your .env files
+#   4. docker compose up -d (from the caddy folder)
+#
+# ═══════════════════════════════════════════════════════════════
+
+# ─── DASHBOARDS ───────────────────────────────────────────────
+
+home.family.tld {
+	reverse_proxy homarr:7575
+}
+
+status.family.tld {
+	reverse_proxy uptime-kuma:3001
+}
+
+manage.family.tld {
+	reverse_proxy portainer:9443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+# ─── DATA SOVEREIGNTY (CORE) ─────────────────────────────────
+
+vault.family.tld {
+	reverse_proxy vaultwarden:80
+}
+
+cloud.family.tld {
+	reverse_proxy nextcloud-aio:11000
+}
+
+photos.family.tld {
+	reverse_proxy immich-server:2283
+}
+
+sync.family.tld {
+	reverse_proxy syncthing:8384
+}
+
+# ─── FINANCE ──────────────────────────────────────────────────
+
+budget.family.tld {
+	reverse_proxy actual-budget:5006
+}
+
+finance.family.tld {
+	reverse_proxy firefly-iii:8080
+}
+
+invest.family.tld {
+	reverse_proxy ghostfolio:3333
+}
+
+invoice.family.tld {
+	reverse_proxy invoice-ninja:80
+}
+
+# ─── HEALTH ───────────────────────────────────────────────────
+
+health.family.tld {
+	reverse_proxy fasten:8080
+}
+
+fitness.family.tld {
+	reverse_proxy wger:80
+}
+
+# ─── DOCUMENTS & LEGAL ───────────────────────────────────────
+
+docs.family.tld {
+	reverse_proxy paperless-ngx:8000
+}
+
+sign.family.tld {
+	reverse_proxy docuseal:3000
+}
+
+forms.family.tld {
+	reverse_proxy opnform:80
+}
+
+# ─── EDUCATION & KNOWLEDGE ───────────────────────────────────
+
+wiki.family.tld {
+	reverse_proxy bookstack:80
+}
+
+notes.family.tld {
+	reverse_proxy siyuan:6806
+}
+
+books.family.tld {
+	reverse_proxy calibre-web:8083
+}
+
+learn.family.tld {
+	reverse_proxy moodle:8080
+}
+
+# ─── TASKS & PROJECTS ────────────────────────────────────────
+
+tasks.family.tld {
+	reverse_proxy vikunja:3456
+}
+
+projects.family.tld {
+	reverse_proxy leantime:80
+}
+
+time.family.tld {
+	reverse_proxy kimai:8001
+}
+
+# ─── COMMUNICATION ───────────────────────────────────────────
+
+chat.family.tld {
+	reverse_proxy element-web:80
+}
+
+matrix.family.tld {
+	reverse_proxy synapse:8008
+}
+
+meet.family.tld {
+	reverse_proxy jitsi-web:443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+# ─── FOOD & HOME ─────────────────────────────────────────────
+
+recipes.family.tld {
+	reverse_proxy mealie:9000
+}
+
+grocery.family.tld {
+	reverse_proxy kitchenowl-web:80
+}
+
+pantry.family.tld {
+	reverse_proxy grocy:80
+}
+
+garden.family.tld {
+	reverse_proxy plant-it:8080
+}
+
+# ─── SMART HOME ──────────────────────────────────────────────
+
+ha.family.tld {
+	reverse_proxy homeassistant:8123
+}
+
+esp.family.tld {
+	reverse_proxy esphome:6052
+}
+
+inventory.family.tld {
+	reverse_proxy homebox:7745
+}
+
+# ─── FAMILY ───────────────────────────────────────────────────
+
+location.family.tld {
+	reverse_proxy owntracks-frontend:80
+}
+
+# ─── MENTAL HEALTH ────────────────────────────────────────────
+
+journal.family.tld {
+	reverse_proxy journiv:3000
+}
+
+# ─── AUTOMATION ───────────────────────────────────────────────
+
+auto.family.tld {
+	reverse_proxy n8n:5678
+}
+
+auth.family.tld {
+	reverse_proxy authelia:9091
+}
+
+# ─── EMERGENCY ────────────────────────────────────────────────
+
+offline.family.tld {
+	reverse_proxy kiwix:8080
+}

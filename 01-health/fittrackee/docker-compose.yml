@@ -1,0 +1,14 @@
+services:
+  fittrackee:
+    image: fittrackee/fittrackee:latest
+    container_name: fittrackee
+    ports:
+      - "${PORT:-5000}:5000"
+    volumes:
+      - ./data:/usr/src/app/data
+    environment:
+      - FLASK_APP=fittrackee
+      - DATABASE_URL=sqlite:////usr/src/app/data/fittrackee.db
+      - APP_SECRET_KEY=${SECRET_KEY:-changeme}
+      - UI_URL=http://localhost:${PORT:-5000}
+    restart: unless-stopped

@@ -1,0 +1,11 @@
+services:
+  plant-it:
+    image: msdeluise/plant-it-server:latest
+    container_name: plant-it
+    ports:
+      - "${PORT:-8085}:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - USERS_LIMIT=-1
+    restart: unless-stopped

@@ -1,0 +1,100 @@
+# ═══════════════════════════════════════════════════════════════
+# Sovereign Life OS — Master Compose (Essential Stack)
+# ═══════════════════════════════════════════════════════════════
+#
+# This deploys the "Essential Four" + monitoring + dashboard
+# in a single command. For individual services, use the
+# docker-compose.yml in each tool's folder instead.
+#
+# Usage:
+#   docker compose -f docker-compose.master.yml up -d
+#
+# ═══════════════════════════════════════════════════════════════
+
+services:
+  # ─── 1. PASSWORD MANAGER (deploy first) ───────────────────
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    ports:
+      - "8222:80"
+    volumes:
+      - ./10-data/vaultwarden/data:/data
+    environment:
+      - SIGNUPS_ALLOWED=true
+    restart: unless-stopped
+
+  # ─── 2. AD BLOCKING ──────────────────────────────────────
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8053:80/tcp"
+    volumes:
+      - ./10-data/pihole/data/etc-pihole:/etc/pihole
+      - ./10-data/pihole/data/etc-dnsmasq.d:/etc/dnsmasq.d
+    environment:
+      - WEBPASSWORD=changeme
+      - TZ=America/New_York
+    restart: unless-stopped
+
+  # ─── 3. MEAL PLANNING ────────────────────────────────────
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    container_name: mealie
+    ports:
+      - "9925:9000"
+    volumes:
+      - ./07-food/mealie/data:/app/data
+    environment:
+      - ALLOW_SIGNUP=true
+      - TZ=America/New_York
+      - BASE_URL=http://localhost:9925
+    restart: unless-stopped
+
+  # ─── 4. DASHBOARD ────────────────────────────────────────
+  homarr:
+    image: ghcr.io/homarr-dev/homarr:latest
+    container_name: homarr
+    ports:
+      - "7575:7575"
+    volumes:
+      - ./14-infrastructure/homarr/data/configs:/appdata/configs
+      - ./14-infrastructure/homarr/data/icons:/appdata/icons
+      - ./14-infrastructure/homarr/data/data:/appdata/data
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+  # ─── 5. MONITORING ───────────────────────────────────────
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./14-infrastructure/uptime-kuma/data:/app/data
+    restart: unless-stopped
+
+  # ─── 6. DOCKER MANAGEMENT ────────────────────────────────
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    ports:
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./14-infrastructure/portainer/data:/data
+    restart: unless-stopped
+
+  # ─── 7. AUTO-UPDATES ─────────────────────────────────────
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+    restart: unless-stopped

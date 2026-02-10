@@ -1,0 +1,10 @@
+services:
+  fasten:
+    image: ghcr.io/fastenhealth/fasten-onprem:latest
+    container_name: fasten
+    ports:
+      - "${PORT:-9090}:8080"
+    volumes:
+      - ./data/fasten:/opt/fasten/db
+      - ./data/cache:/opt/fasten/cache
+    restart: unless-stopped

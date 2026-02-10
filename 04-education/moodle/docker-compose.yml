@@ -1,0 +1,15 @@
+services:
+  moodle:
+    image: bitnami/moodle:latest
+    container_name: moodle
+    ports:
+      - "${PORT:-8080}:8080"
+    volumes:
+      - ./data/moodle:/bitnami/moodle
+      - ./data/moodledata:/bitnami/moodledata
+    environment:
+      - MOODLE_USERNAME=${ADMIN_USER:-admin}
+      - MOODLE_PASSWORD=${ADMIN_PASS:-changeme}
+      - MOODLE_EMAIL=${ADMIN_EMAIL:-admin@example.com}
+      - MOODLE_DATABASE_TYPE=sqlite3
+    restart: unless-stopped

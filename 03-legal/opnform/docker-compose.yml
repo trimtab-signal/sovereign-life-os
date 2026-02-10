@@ -1,0 +1,11 @@
+services:
+  opnform:
+    image: jhumanj/opnform:latest
+    container_name: opnform
+    ports:
+      - "${PORT:-3000}:80"
+    volumes:
+      - ./data:/persist
+    environment:
+      - APP_URL=http://localhost:${PORT:-3000}
+    restart: unless-stopped

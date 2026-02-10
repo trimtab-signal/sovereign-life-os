@@ -1,0 +1,9 @@
+services:
+  journiv:
+    image: ghcr.io/journiv/journiv-app:latest
+    container_name: journiv
+    ports:
+      - "${PORT:-3000}:3000"
+    volumes:
+      - ./data:/data
+    restart: unless-stopped

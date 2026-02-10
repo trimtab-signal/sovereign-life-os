@@ -1,0 +1,14 @@
+services:
+  jitsi-web:
+    image: jitsi/web:stable
+    container_name: jitsi-web
+    ports:
+      - "${PORT:-8443}:443"
+    volumes:
+      - ./data/web:/config
+      - ./data/transcripts:/usr/share/jitsi-meet/transcripts
+    environment:
+      - PUBLIC_URL=https://localhost:${PORT:-8443}
+      - TZ=${TZ:-America/New_York}
+      - ENABLE_AUTH=0
+    restart: unless-stopped

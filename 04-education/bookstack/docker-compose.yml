@@ -1,0 +1,14 @@
+services:
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack
+    ports:
+      - "${PORT:-6875}:80"
+    volumes:
+      - ./data/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DB_CONNECTION=sqlite
+      - APP_URL=http://localhost:${PORT:-6875}
+    restart: unless-stopped

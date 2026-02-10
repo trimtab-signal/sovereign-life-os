@@ -1,0 +1,11 @@
+services:
+  anki-sync:
+    image: ghcr.io/ankicerts/anki-sync-server:latest
+    container_name: anki-sync
+    ports:
+      - "${PORT:-27701}:27701"
+    volumes:
+      - ./data:/data
+    environment:
+      - SYNC_USER1=${SYNC_USER:-user:password}
+    restart: unless-stopped

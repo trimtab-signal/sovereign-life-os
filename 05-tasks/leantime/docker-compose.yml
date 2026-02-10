@@ -1,0 +1,30 @@
+services:
+  leantime:
+    image: leantime/leantime:latest
+    container_name: leantime
+    ports:
+      - "${PORT:-8080}:80"
+    volumes:
+      - ./data/public:/var/www/html/public/userfiles
+      - ./data/sessions:/sessions
+    environment:
+      - LEAN_DB_HOST=mysql
+      - LEAN_DB_USER=lean
+      - LEAN_DB_PASSWORD=${DB_PASS:-leantime}
+      - LEAN_DB_DATABASE=leantime
+      - LEAN_SITENAME=${SITE_NAME:-Family Projects}
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  mysql:
+    image: mariadb:10.11
+    container_name: leantime-db
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS:-rootpass}
+      - MYSQL_DATABASE=leantime
+      - MYSQL_USER=lean
+      - MYSQL_PASSWORD=${DB_PASS:-leantime}
+    restart: unless-stopped

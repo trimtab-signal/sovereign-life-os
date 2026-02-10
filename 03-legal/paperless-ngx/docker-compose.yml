@@ -1,0 +1,22 @@
+services:
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless-ngx
+    ports:
+      - "${PORT:-8000}:8000"
+    volumes:
+      - ./data/data:/usr/src/paperless/data
+      - ./data/media:/usr/src/paperless/media
+      - ./data/export:/usr/src/paperless/export
+      - ./consume:/usr/src/paperless/consume
+    environment:
+      - PAPERLESS_OCR_LANGUAGE=eng
+      - PAPERLESS_SECRET_KEY=${SECRET_KEY:-changeme}
+      - PAPERLESS_TIME_ZONE=${TZ:-America/New_York}
+      - PAPERLESS_URL=http://localhost:${PORT:-8000}
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: paperless-redis
+    restart: unless-stopped
