@@ -1,0 +1,12 @@
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    ports:
+      - "${PORT:-8222}:80"
+    volumes:
+      - ./data:/data
+    environment:
+      - SIGNUPS_ALLOWED=${SIGNUPS:-true}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-}
+    restart: unless-stopped

@@ -1,0 +1,20 @@
+services:
+  cboard-api:
+    image: cboard/cboard-api:latest
+    container_name: cboard-api
+    ports:
+      - "${PORT:-10010}:10010"
+    volumes:
+      - ./data:/data
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/cboard
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:6
+    container_name: cboard-mongo
+    volumes:
+      - ./data/mongo:/data/db
+    restart: unless-stopped

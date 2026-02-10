@@ -1,0 +1,11 @@
+services:
+  homebox:
+    image: ghcr.io/sysadminsmedia/homebox:latest
+    container_name: homebox
+    ports:
+      - "${PORT:-7745}:7745"
+    volumes:
+      - ./data:/data
+    environment:
+      - HBOX_OPTIONS_ALLOW_REGISTRATION=true
+    restart: unless-stopped
